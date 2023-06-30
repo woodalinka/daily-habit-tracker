@@ -19,7 +19,7 @@ function App() {
 
   return (
       <BrowserRouter>
-        <Header />
+        <Header onAddHabit={() => setShowModal(true)}/>
         <Routes>
           <Route
               path="/"
