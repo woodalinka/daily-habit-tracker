@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import Header from './components/Header';
+import AddHabitModal from './components/AddHabitModal';
 import './App.css';
 
+type Habit = {
+  name: string;
+}
 function App() {
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleAddHabit = (habit: Habit) => {
+    setHabits([...habits, habit]);
+    setShowModal(false);
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route
+              path="/"
+              element={
+                <>{showModal && <AddHabitModal onAddHabit={handleAddHabit} />}</>
+              }
+          />
+          <Route path="/focus" element={<div>Focus Page</div>} />
+          <Route path="/journal" element={<div>Journal Page</div>} />
+          <Route path="/other" element={<div>Other Page</div>} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 
