@@ -1,36 +1,37 @@
 import React, {useState} from 'react';
-import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Header from './components/Header';
-import AddHabitModal from './components/AddHabitModal';
 import './App.css';
+import AddHabitModal from "./components/AddHabitModal";
+import Other from "./components/Other";
+import Focus from './components/Focus';
+import Habits from './Habits';
+import Journal from "./components/Journal";
 
 type Habit = {
-  name: string;
+    name: string;
 }
+
 function App() {
-  const [habits, setHabits] = useState<Habit[]>([]);
-  const [showModal, setShowModal] = useState(false);
 
-  const handleAddHabit = (habit: Habit) => {
-    setHabits([...habits, habit]);
-    setShowModal(false);
-  };
+    const [showModal, setShowModal] = useState(false);
+    const [habits, setHabits] = useState<Habit[]>([]);
 
+    const addHabit = (newHabit: Habit) => {
+        setHabits([...habits, newHabit]);
+        setShowModal(false);
+    }
 
   return (
       <BrowserRouter>
         <Header onAddHabit={() => setShowModal(true)}/>
-        <Routes>
-          <Route
-              path="/"
-              element={
-                <>{showModal && <AddHabitModal onAddHabit={handleAddHabit} />}</>
-              }
-          />
-          <Route path="/focus" element={<div>Focus Page</div>} />
-          <Route path="/journal" element={<div>Journal Page</div>} />
-          <Route path="/other" element={<div>Other Page</div>} />
-        </Routes>
+          {showModal && <AddHabitModal onAddHabit={addHabit} />}
+          <Routes>
+              <Route path="/" element={<Habits habits={habits}/>} />
+              <Route path="/focus" element={<Focus />} />
+              <Route path="/journal" element={<Journal />} />
+              <Route path="/other" element={<Other />} />
+          </Routes>
       </BrowserRouter>
   );
 }
