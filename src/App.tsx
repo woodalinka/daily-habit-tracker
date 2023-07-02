@@ -14,7 +14,7 @@ type Habit = {
     _completedDates: string[];
 }
 
-function App() {
+const App = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [habits, setHabits] = useState<Habit[]>([]);

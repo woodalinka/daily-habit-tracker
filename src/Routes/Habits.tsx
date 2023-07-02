@@ -4,7 +4,7 @@ import Card from "../utils/Card";
 type HabitsProps = {
     habits: { name: string; _isCompleted: boolean; _completedDates: string[]}[];
 }
-function Habits ({habits}: HabitsProps) {
+const Habits = ({habits}: HabitsProps) => {
     return (<div className="container mx-auto p-4">
         {habits.length === 0 ?
             <div className="flex justify-center items-center h-screen">

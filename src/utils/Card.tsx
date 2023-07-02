@@ -7,7 +7,7 @@ type CardProps = {
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-function Card({title, isCompleted}:  CardProps ) {
+const Card = ({title, isCompleted}:  CardProps ) => {
     const [completed, setCompleted] = useState(
         daysOfWeek.map(() => false)
     );

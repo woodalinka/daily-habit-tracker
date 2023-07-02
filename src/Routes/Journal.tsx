@@ -1,6 +1,6 @@
 import React from "react";
 
-function Journal () {
+const Journal = () => {
     return (<div> Journal </div>)
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Other () {
+const Other = () => {
     return (<div> Other </div>)
 }
 

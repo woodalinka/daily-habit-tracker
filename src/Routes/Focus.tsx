@@ -1,6 +1,6 @@
 import React from "react";
 
-function Focus () {
+const Focus = () => {
     return (<div> Focus </div>)
 }
 

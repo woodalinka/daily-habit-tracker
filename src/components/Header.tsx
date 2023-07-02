@@ -5,7 +5,7 @@ type HeaderProps = {
     onAddHabit: () => void;
 }
 
-function Header({onAddHabit}: HeaderProps) {
+const Header = ({onAddHabit}: HeaderProps) => {
     return (
         <nav className="flex justify-between bg-orange-500 p-4">
             <div>

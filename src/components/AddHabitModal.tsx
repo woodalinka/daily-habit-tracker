@@ -10,7 +10,7 @@ type AddHabitModalProps = {
     onAddHabit: (newHabit: Habit) => void;
 };
 
-function AddHabitModal({ onAddHabit }: AddHabitModalProps) {
+const AddHabitModal = ({ onAddHabit }: AddHabitModalProps) => {
     const [newHabit, setNewHabit] = useState("");
 
     const handleAddHabit = (e: React.FormEvent) => {
