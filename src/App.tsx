@@ -3,13 +3,15 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Header from './components/Header';
 import './App.css';
 import AddHabitModal from "./components/AddHabitModal";
-import Other from "./components/Other";
-import Focus from './components/Focus';
-import Habits from './Habits';
-import Journal from "./components/Journal";
+import Other from "./Routes/Other";
+import Focus from './Routes/Focus';
+import Habits from './Routes/Habits';
+import Journal from "./Routes/Journal";
 
 type Habit = {
     name: string;
+    _isCompleted: boolean;
+    _completedDates: string[];
 }
 
 function App() {

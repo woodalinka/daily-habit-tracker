@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 type Habit = {
     name: string;
+    _isCompleted: boolean;
+    _completedDates: string[];
 };
 
 type AddHabitModalProps = {
@@ -13,7 +15,7 @@ function AddHabitModal({ onAddHabit }: AddHabitModalProps) {
 
     const handleAddHabit = (e: React.FormEvent) => {
         e.preventDefault();
-        onAddHabit({ name: newHabit });
+        onAddHabit({ name: newHabit, _isCompleted: false, _completedDates: [] });
         setNewHabit("");
     };
 
