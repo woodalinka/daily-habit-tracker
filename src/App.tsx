@@ -24,10 +24,14 @@ const App = () => {
         setShowModal(false);
     }
 
+    const closeModal = () => {
+        setShowModal(false);
+    }
+
   return (
       <BrowserRouter>
         <Header onAddHabit={() => setShowModal(true)}/>
-          {showModal && <AddHabitModal onAddHabit={addHabit} />}
+          {showModal && <AddHabitModal onAddHabit={addHabit}  onClose={closeModal} show/>}
           <Routes>
               <Route path="/" element={<Habits habits={habits}/>} />
               <Route path="/focus" element={<Focus />} />
