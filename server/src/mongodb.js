@@ -40,6 +40,7 @@ var mongodb_1 = require("mongodb");
 var connectionURL = 'mongodb://127.0.0.1:27017';
 var databaseName = "habits";
 var client = new mongodb_1.MongoClient(connectionURL);
+var database = client.db(databaseName);
 // const id = new ObjectId();
 // console.log("let's see whats here", id)
 // const connectToDatabase = async () => {
@@ -55,14 +56,13 @@ var client = new mongodb_1.MongoClient(connectionURL);
 //     console.log(error, "Connectivity issues")
 // })
 var updateData = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var database, habits, result;
+    var habits, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, client.connect()];
             case 1:
                 _a.sent();
                 console.log("we are in");
-                database = client.db(databaseName);
                 habits = database.collection('habits');
                 return [4 /*yield*/, habits.updateOne({ _id: new mongodb_1.ObjectId("64d0f818b9044d6bf784a909") }, { $set: {
                             name: "Workout"
@@ -75,18 +75,28 @@ var updateData = function () { return __awaiter(void 0, void 0, void 0, function
         }
     });
 }); };
-updateData().catch(console.dir);
-// async function insertData(db: Db):Promise<void> {
-//     try{
-//         const result = await db.collection('habits').insertOne({
-//             name: 'Drink Water',
-//             occurrence: 2
-//         })
-//         console.log(result.insertedId)
-//     } catch(error) {
-//         console.log(error, "Failed to insert entry")
-//     }
-// }
+// updateData().catch(console.dir)
+var insertEntry = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var habits, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, client.connect()];
+            case 1:
+                _a.sent();
+                console.log("We are in to enter the first entry");
+                habits = database.collection('habits');
+                return [4 /*yield*/, habits.insertOne({
+                        name: 'Drink Water',
+                        occurrence: 2
+                    })];
+            case 2:
+                result = _a.sent();
+                console.log(result.insertedId);
+                return [2 /*return*/];
+        }
+    });
+}); };
+insertEntry().catch(console.dir);
 // async function main() {
 //     const db = await connectToDatabase();
 //     if (db) {

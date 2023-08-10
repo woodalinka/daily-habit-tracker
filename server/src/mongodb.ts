@@ -8,6 +8,7 @@ interface Habit {
 const connectionURL = 'mongodb://127.0.0.1:27017';
 const databaseName: string  = "habits";
 const client = new MongoClient(connectionURL);
+const database = client.db(databaseName);
 
 // const id = new ObjectId();
 // console.log("let's see whats here", id)
@@ -30,7 +31,6 @@ const client = new MongoClient(connectionURL);
 const updateData = async () => {
     await client.connect();
     console.log("we are in")
-    const database = client.db(databaseName);
     const habits = database.collection<Habit>('habits')
 
     const result = await habits.updateOne(
@@ -43,18 +43,23 @@ const updateData = async () => {
     console.log(`${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`)
 }
 
-updateData().catch(console.dir)
-// async function insertData(db: Db):Promise<void> {
-//     try{
-//         const result = await db.collection('habits').insertOne({
-//             name: 'Drink Water',
-//             occurrence: 2
-//         })
-//         console.log(result.insertedId)
-//     } catch(error) {
-//         console.log(error, "Failed to insert entry")
-//     }
-// }
+// updateData().catch(console.dir)
+
+const insertEntry = async ()  =>  {
+    await client.connect();
+    console.log("We are in to enter the first entry")
+    const habits = database.collection('habits')
+
+
+    const result = await habits.insertOne({
+            name: 'Drink Water',
+            occurrence: 2
+        })
+        console.log(result.insertedId)
+}
+
+insertEntry().catch(console.dir)
+
 
 // async function main() {
 //     const db = await connectToDatabase();
