@@ -58,7 +58,7 @@ const insertEntry = async ()  =>  {
         console.log(result.insertedId)
 }
 
-insertEntry().catch(console.dir)
+// insertEntry().catch(console.dir)
 
 
 // async function main() {

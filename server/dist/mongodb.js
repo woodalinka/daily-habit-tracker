@@ -49,7 +49,7 @@ const insertEntry = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     console.log(result.insertedId);
 });
-insertEntry().catch(console.dir);
+// insertEntry().catch(console.dir)
 // async function main() {
 //     const db = await connectToDatabase();
 //     if (db) {
