@@ -35,9 +35,10 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true,
         trim: true,
+        minlength: 7,
         validate(value) {
-            if (value.length < 6) {
-                throw new Error('Too short. Minimum 6 characters');
+            if (value.length < 7) {
+                throw new Error('Too short. Minimum 7 characters');
             }
             if (value.toLowerCase().includes('password')) {
                 throw new Error(`Can't use the word "password" in your password`);
@@ -59,12 +60,12 @@ const createUser = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log("error", error);
     });
 });
-createUser().catch(err => console.log(err));
+// createUser().catch(err => console.log(err))
 const habitSchema = new mongoose_1.Schema({
     description: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
     },
     occurrence: {
         type: Number,
@@ -80,7 +81,7 @@ const Habit = (0, mongoose_1.model)('Habit', habitSchema);
 const createHabit = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, mongoose_1.connect)('mongodb://127.0.0.1:27017/habits-api');
     const newHabit = new Habit({
-        description: "Program",
+        description: "   Program Node.js",
         occurrence: 7,
         completion: false
     });
@@ -90,4 +91,4 @@ const createHabit = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(error);
     });
 });
-// createHabit().catch(err => console.log(err))
+createHabit().catch(err => console.log(err));
