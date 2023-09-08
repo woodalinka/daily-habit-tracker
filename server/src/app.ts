@@ -17,66 +17,73 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World')
 })
 
-app.post('/users', (req: Request, res: Response) => {
+app.post('/users', async (req: Request, res: Response) => {
     const user = new User(req.body)
-    user.save().then(() => {
-        res.send(user)
-    }).catch((e: Error) => {
+
+    try {
+        await user.save()
+        res.status(201).send(user)
+    } catch (e) {
         res.status(400).send(e)
-    })
+    }
 })
 
-app.get('/users', (req: Request, res: Response) => {
-    User.find({}).then((users: UserType[]) => {
+app.get('/users', async (req: Request, res: Response) => {
+    try {
+        const users: UserType[] = await User.find({})
         res.send(users)
-    }).catch((e: Error) => {
+    } catch (e) {
         res.status(500).send()
-    })
+    }
 })
 
-app.get('/users/:id', (req: Request, res: Response) => {
+app.get('/users/:id', async (req: Request, res: Response) => {
     const _id = req.params.id
 
-    User.findById(_id).then((user) => {
+    try {
+        const user: UserType | null = await User.findById(_id)
         if (!user) {
             return res.status(404).send()
         }
-
         res.send(user)
-    }).catch((e: Error) => {
+    } catch (e) {
         res.status(500).send()
-    })
+    }
 })
 
-app.post('/habits', (req: Request, res: Response) => {
+app.post('/habits', async (req: Request, res: Response) => {
     const habit = new Habit(req.body)
-    habit.save().then(() => {
+
+    try {
+        await habit.save();
         res.send(habit)
-    }).catch((e:Error) => {
+    } catch (e) {
         res.status(400).send(e)
-    })
+    }
 })
 
-app.get('/habits', (req: Request, res: Response) => {
-    Habit.find({}).then((habits: HabitType[]) => {
+app.get('/habits', async (req: Request, res: Response) => {
+    try {
+        const habits: HabitType[] = await Habit.find()
         res.send(habits)
-    }).catch((e: Error) => {
+    } catch (e) {
         res.status(500).send(e)
-    })
+    }
 })
 
-app.get('/habits/:id', (req: Request, res: Response) => {
+app.get('/habits/:id', async (req: Request, res: Response) => {
     const _id = req.params.id
 
-    Habit.findById(_id).then((habit) => {
+    try {
+        const habit: HabitType | null = await Habit.findById(_id)
         if (!habit) {
-            return res.status(404).send()
+            res.status(404).send()
         }
 
         res.send(habit)
-    }).catch((e: Error) => {
+    } catch (e) {
         res.status(500).send(e)
-    })
+    }
 })
 
 app.listen(port, () => {

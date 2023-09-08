@@ -1,4 +1,5 @@
 import {model, Schema} from "mongoose";
+
 export interface Habit {
     description: {
         type: String,
@@ -32,6 +33,6 @@ const habitSchema = new Schema<Habit>({
     }
 })
 
-const Habit = model('Habit', habitSchema)
+// const Habit = model('Habit', habitSchema)
 
 export default model('Habit', habitSchema)
