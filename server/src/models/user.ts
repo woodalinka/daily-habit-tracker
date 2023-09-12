@@ -1,4 +1,5 @@
 import {model, Schema} from "mongoose";
+import * as bcrypt from 'bcrypt';
 import validator from "validator";
 
 export interface User {
@@ -41,6 +42,14 @@ const userSchema = new Schema<User>({
     }
 })
 
-// const User = model('User', userSchema);
+userSchema.pre('save', async function(next) {
+    const user = this
+
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+
+    next()
+})
 
 export default model('User', userSchema)
