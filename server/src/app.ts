@@ -11,7 +11,17 @@ const app = express();
 const port = process.env.PORT || 8080
 const publicDirectoryPath = path.join(__dirname, '../../client/build')
 
-
+// app.use((req: Request, res: Response, next) => {
+//     if (req.method === 'GET') {
+//         res.send('GET requests are disabled')
+//     } else {
+//         next()
+//     }
+// })
+//
+// app.use((req: Request, res: Response) => {
+//         res.status(503).send('Website under maintenance')
+// })
 
 app.use(express.static(publicDirectoryPath));
 app.use(express.json())

@@ -11,6 +11,7 @@ export interface iUserDocument extends Document {
     tokens: []
 }
 
+
 export interface iUserModel extends Model<iUserDocument> {
     findByCredentials(email: string, password: string): Promise<iUserDocument>
 }

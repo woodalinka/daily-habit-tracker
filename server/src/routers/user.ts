@@ -1,5 +1,7 @@
-import express, {Request, Response} from "express";
+import express, {Response} from "express";
+import {Request} from "../utils/customTypes";
 import User, {iUserDocument as UserType} from "../models/user";
+import auth from '../middleware/auth'
 
 const router = express.Router()
 
@@ -25,13 +27,8 @@ router.post('/users/login', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/users', async (req: Request, res: Response) => {
-    try {
-        const users: UserType[] = await User.find({})
-        res.send(users)
-    } catch (e) {
-        res.status(500).send()
-    }
+router.get('/users/me', auth, async (req: Request, res: Response) => {
+    res.send(req.user)
 })
 
 router.get('/users/:id', async (req: Request, res: Response) => {
