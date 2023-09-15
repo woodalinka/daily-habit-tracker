@@ -48,12 +48,17 @@ router.patch('/habits/:id', async(req: Request, res: Response) => {
     }
 
     try {
-        const update = await Habit.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
-        if (!update) {
+        // const update = await Habit.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
+        const habitUpdate = await Habit.findById(req.params.id)
+
+        if (!habitUpdate) {
             return res.status(404).send()
         }
 
-        res.send(update);
+        updates.forEach((update: string) => (habitUpdate as any)[update] = req.body[update])
+        await habitUpdate.save()
+
+        res.send(habitUpdate);
 
     } catch (e) {
         res.status(500).send(e)

@@ -1,5 +1,5 @@
 import express, {Request, Response} from "express";
-import User, {User as UserType} from "../models/user";
+import User, {iUserDocument as UserType} from "../models/user";
 
 const router = express.Router()
 
@@ -8,9 +8,20 @@ router.post('/users', async (req: Request, res: Response) => {
 
     try {
         await user.save()
-        res.status(201).send(user)
+        const token = await user.generateAuthToken();
+        res.status(201).send({user, token})
     } catch (e) {
         res.status(400).send(e)
+    }
+})
+
+router.post('/users/login', async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const token = await user.generateAuthToken()
+        res.send({user, token})
+    } catch (e) {
+        res.status(400).send()
     }
 })
 
@@ -57,10 +68,6 @@ router.patch('/users/:id', async(req: Request, res: Response) => {
         updates.forEach((update: string) => (user as any)[update] = req.body[update])
         await user.save()
 
-        // const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
-
-
-
         res.send(user)
     } catch(e) {
         res.status(400).send(e)
@@ -79,6 +86,5 @@ router.delete('/users/:id', async (req: Request, res: Response) => {
         res.status(500).send()
     }
 })
-
 
 export default router;

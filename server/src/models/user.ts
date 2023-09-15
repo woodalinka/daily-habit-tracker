@@ -1,14 +1,21 @@
-import {model, Schema} from "mongoose";
+import {Document, Model, model, Schema} from "mongoose";
 import * as bcrypt from 'bcrypt';
 import validator from "validator";
+import jwt from 'jsonwebtoken';
 
-export interface User {
+export interface iUserDocument extends Document {
     name: string;
     email: string;
-    password: string
+    password: string;
+    generateAuthToken(): Promise<string>,
+    tokens: []
 }
 
-const userSchema = new Schema<User>({
+export interface iUserModel extends Model<iUserDocument> {
+    findByCredentials(email: string, password: string): Promise<iUserDocument>
+}
+
+const userSchema = new Schema<iUserDocument>({
     name: {
         type: String,
         required: true,
@@ -17,6 +24,7 @@ const userSchema = new Schema<User>({
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value: string) {
@@ -39,9 +47,41 @@ const userSchema = new Schema<User>({
                 throw new Error(`Can't use the word "password" in your password`)
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true}
+    }]
 })
 
+userSchema.methods.generateAuthToken = async function () {
+    const user = this
+    const token = jwt.sign({_id: user._id.toString()}, 'thisismynewcourse')
+
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+
+    return token
+}
+
+userSchema.statics.findByCredentials = async (email: string, password: string ) => {
+    const user = await User.findOne({ email: email})
+
+    if (!user) {
+        throw new Error('Unable to login')
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if(!isMatch) {
+        throw new Error('Unable to login')
+    }
+
+    return user
+}
+
+//Hash the plain text password before saving
 userSchema.pre('save', async function(next) {
     const user = this
 
@@ -52,4 +92,5 @@ userSchema.pre('save', async function(next) {
     next()
 })
 
-export default model('User', userSchema)
+const User = model<iUserDocument, iUserModel>('User', userSchema)
+export default User;
