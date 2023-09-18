@@ -1,18 +1,25 @@
-import {model, Schema} from "mongoose";
+import {model, Schema, PopulatedDoc} from "mongoose";
+import {ObjectId} from "mongodb";
+import User from './user'
 
 export interface Habit {
     description: {
-        type: String,
+        type: string,
         required: true,
         trim: true
     }
     occurrence: {
-        type: Number,
+        type: number,
         required: true
     }
     completion: {
-        type: Boolean,
+        type: boolean,
         default: false
+    },
+    owner: {
+        type: ObjectId,
+        required: boolean,
+        ref: PopulatedDoc<typeof User>
     }
 }
 
@@ -30,9 +37,14 @@ const habitSchema = new Schema<Habit>({
     completion: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: ObjectId,
+        required: true,
+        ref: 'User'
     }
 })
 
-// const Habit = model('Habit', habitSchema)
+const Habit = model('Habit', habitSchema)
 
-export default model('Habit', habitSchema)
+export default Habit;

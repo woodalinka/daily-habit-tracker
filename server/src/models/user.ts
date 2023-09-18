@@ -2,13 +2,16 @@ import {Document, Model, model, Schema} from "mongoose";
 import * as bcrypt from 'bcrypt';
 import validator from "validator";
 import jwt from 'jsonwebtoken';
+import Habit from './habit';
 
 export interface iUserDocument extends Document {
     name: string;
     email: string;
     password: string;
     generateAuthToken(): Promise<string>,
-    tokens: []
+    tokens: {token: string}[],
+    getPublicProfile(): Promise<object>,
+    habits?: typeof Habit[]
 }
 
 
@@ -56,6 +59,22 @@ const userSchema = new Schema<iUserDocument>({
     }]
 })
 
+userSchema.virtual('habits', {
+    ref: 'Habit',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+userSchema.methods.toJSON = function() {
+    const user = this
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
+
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({_id: user._id.toString()}, 'thisismynewcourse')
@@ -90,6 +109,12 @@ userSchema.pre('save', async function(next) {
         user.password = await bcrypt.hash(user.password, 8)
     }
 
+    next()
+})
+
+userSchema.pre('deleteOne', {document: true, query: false}, async function (next) {
+    const user = this
+    await Habit.deleteMany({owner: user._id})
     next()
 })
 

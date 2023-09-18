@@ -1,6 +1,6 @@
 import express, {Response} from "express";
 import {Request} from "../utils/customTypes";
-import User, {iUserDocument as UserType} from "../models/user";
+import User from "../models/user";
 import auth from '../middleware/auth'
 
 const router = express.Router()
@@ -27,25 +27,36 @@ router.post('/users/login', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/users/me', auth, async (req: Request, res: Response) => {
-    res.send(req.user)
-})
-
-router.get('/users/:id', async (req: Request, res: Response) => {
-    const _id = req.params.id
-
+router.post('/users/logout', auth, async (req: Request, res: Response) => {
     try {
-        const user: UserType | null = await User.findById(_id)
-        if (!user) {
-            return res.status(404).send()
-        }
-        res.send(user)
+        // if (req.user) {
+            req.user!.tokens = req.user!.tokens.filter((token) => {
+                return token.token !== req.token
+            })
+            await req.user!.save()
+        // }
+
+        res.send()
     } catch (e) {
         res.status(500).send()
     }
 })
 
-router.patch('/users/:id', async(req: Request, res: Response) => {
+router.post('/users/logoutAll', auth, async (req: Request, res: Response) => {
+    try {
+        req.user!.tokens = []
+        await req.user!.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.get('/users/me', auth, async (req: Request, res: Response) => {
+    res.send(req.user)
+})
+
+router.patch('/users/me', auth, async(req: Request, res: Response) => {
     const updates: string[] = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -55,29 +66,22 @@ router.patch('/users/:id', async(req: Request, res: Response) => {
     }
 
     try {
+        // const user  = await User.findById(req.user!._id)
 
-        const user  = await User.findById(req.params.id)
+        updates.forEach((update: string) => (req.user! as any)[update] = req.body[update])
+        await req.user!.save()
 
-        if(!user) {
-            return res.status(404).send()
-        }
-
-        updates.forEach((update: string) => (user as any)[update] = req.body[update])
-        await user.save()
-
-        res.send(user)
+        res.send(req.user!)
     } catch(e) {
         res.status(400).send(e)
     }
 })
 
-router.delete('/users/:id', async (req: Request, res: Response) => {
+router.delete('/users/me', auth, async (req: Request, res: Response) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
-        if (!user) {
-            return res.status(404).send()
-        }
-
+        console.log("Delete route started")
+        const user = await User.findById(req.user!._id)
+        await user!.deleteOne()
         res.send(user)
     } catch(e) {
         res.status(500).send()
