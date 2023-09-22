@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../utils/Card";
+import HabitCard from "../utils/HabitCard";
 
 type HabitsProps = {
     habits: { name: string; _isCompleted: boolean; _completedDates: string[]}[];
@@ -14,7 +14,7 @@ const Habits = ({habits}: HabitsProps) => {
             </div> :
             <ul>
                 {habits.map((habit, index) => (
-                    <Card key={index} title={habit.name} isCompleted={habit._isCompleted} />
+                    <HabitCard key={index} title={habit.name} isCompleted={habit._isCompleted} />
                 ))}
             </ul>
         }

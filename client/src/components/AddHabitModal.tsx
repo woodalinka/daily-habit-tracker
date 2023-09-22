@@ -12,6 +12,7 @@ type AddHabitModalProps = {
     onAddHabit: (newHabit: Habit) => void;
 };
 
+
 const AddHabitModal = ({show, onClose, onAddHabit}: AddHabitModalProps) => {
     const [newHabit, setNewHabit] = useState("");
     const modalRef = useRef<HTMLDivElement>(null);

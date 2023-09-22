@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 
 type HeaderProps = {
     onAddHabit: () => void;
+    children?: React.ReactNode
 }
 
-const Header = ({onAddHabit}: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({onAddHabit, children}) => {
     return (
         <nav className="flex justify-between bg-orange-500 p-4">
             <div>
