@@ -5,7 +5,7 @@ import auth from '../middleware/auth'
 
 const router = express.Router()
 
-router.post('/users', async (req: Request, res: Response) => {
+router.post('/users/signup', async (req: Request, res: Response) => {
     const user = new User(req.body)
 
     try {
