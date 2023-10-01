@@ -28,7 +28,7 @@ export const AuthContextProvider: React.FC<{children: ReactNode}> = ({children})
     };
 
     const loginHandler = () => {
-        localStorage.setItem('isLoggedIn', '1')
+        localStorage.setItem('isLoggedIn', '1');
         setIsLoggedIn(true);
     }
 

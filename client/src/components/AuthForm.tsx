@@ -2,9 +2,6 @@ import {Form, Link, useSearchParams} from 'react-router-dom';
 import React, {useContext} from "react";
 import AuthContext from "../store/auth-context";
 
-type AuthFormProps = {
-    onAuthenticate: () => void;
-}
 const AuthForm = () => {
     const [searchParams] = useSearchParams();
     const isLogin = searchParams.get('mode') === 'login';
@@ -19,7 +16,7 @@ const AuthForm = () => {
                         {isLogin ? "Log in" : "Create a new user"}
                     </h1>
                 </div>
-                <Form className="mt-8 space-y-6">
+                <Form className="mt-8 space-y-6" method="post">
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
                             <label htmlFor="email" className="sr-only">Email</label>
@@ -52,8 +49,8 @@ const AuthForm = () => {
                         >
                             {isLogin ? 'Create new user' : 'Login'}
                         </Link>
-                        <button  className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded" onClick={ctx.onLogin}>
-                            Save
+                        <button  className="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-2 px-4 rounded">
+                            {isLogin ? 'Enter' : 'Save'}
                         </button>
                     </div>
                 </Form>

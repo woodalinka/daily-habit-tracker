@@ -11,6 +11,16 @@ const app = express();
 const port = process.env.PORT || 8080
 const publicDirectoryPath = path.join(__dirname, '../../client/build')
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // or the specific domain you want to allow
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === 'OPTIONS') {
+        res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+        return res.status(200).json({});
+    }
+    next();
+});
+
 // app.use((req: Request, res: Response, next) => {
 //     if (req.method === 'GET') {
 //         res.send('GET requests are disabled')

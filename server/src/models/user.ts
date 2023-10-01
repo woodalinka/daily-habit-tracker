@@ -22,7 +22,6 @@ export interface iUserModel extends Model<iUserDocument> {
 const userSchema = new Schema<iUserDocument>({
     name: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
