@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Link, useLocation, NavLink} from 'react-router-dom';
+import {useLocation, NavLink} from 'react-router-dom';
 import AuthContext from "../store/auth-context";
 
 type MainNavProps = {
@@ -11,6 +11,7 @@ type MainNavProps = {
 
 const MainNavigation: React.FC<MainNavProps> = (props) => {
     const ctx = useContext(AuthContext);
+    console.log(ctx.isLoggedIn, "This is what is being passed")
 
     const location = useLocation();
     let addButtonAction: (() => void) | null;

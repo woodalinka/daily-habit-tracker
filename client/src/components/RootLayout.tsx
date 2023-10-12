@@ -5,7 +5,7 @@ import Backdrop from "../utils/Backdrop";
 import AddHabitModal from "./AddHabitModal";
 
 type Habit = {
-    name: string;
+    description: string;
     _isCompleted: boolean;
     _completedDates: string[];
 }

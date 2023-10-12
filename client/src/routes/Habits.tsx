@@ -1,11 +1,13 @@
 import React from "react";
 import HabitCard from "../utils/HabitCard";
+import { useHabits, Habit } from "../store/habits-context";
 
-export type HabitsProps = {
-    habits: { name: string; _isCompleted: boolean; _completedDates: string[]}[];
-}
-const Habits = ({habits}: HabitsProps) => {
+
+const Habits = () => {
+    const {habits} = useHabits();
+
     return (
+
         <div className="container mx-auto p-4">
         {habits.length === 0 ?
             <div className="flex justify-center items-start mt-4">
@@ -14,8 +16,8 @@ const Habits = ({habits}: HabitsProps) => {
                 </div>
             </div> :
             <ul>
-                {habits.map((habit, index) => (
-                    <HabitCard key={index} title={habit.name} isCompleted={habit._isCompleted} />
+                {habits.map((habit: Habit, index) => (
+                    <HabitCard key={index} title={habit.description} isCompleted={habit._isCompleted} />
                 ))}
             </ul>
         }

@@ -1,8 +1,7 @@
 import {MongoClient, Db, ObjectId} from 'mongodb';
 
 interface Habit {
-    name: string,
-    occurrence: number
+    name: string
 }
 
 const connectionURL = 'mongodb://127.0.0.1:27017';

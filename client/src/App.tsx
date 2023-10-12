@@ -10,6 +10,9 @@ import HomePage from "./routes/HomePage";
 import Error from "./routes/Error";
 import AuthenticationPage, {action as authAction} from "./routes/AuthenticationPage";
 import {AuthContextProvider} from "./store/auth-context";
+import Habits from "./routes/Habits";
+import {HabitsProvider} from "./store/habits-context";
+
 
 
 // type AppProps = HabitsProps;
@@ -23,7 +26,7 @@ const App = () => {
             errorElement: <Error />,
             children: [
                 {index: true, element: <HomePage />},
-                // {path: 'habit', element: <Habits habits={}}
+                {path: 'habit', element: <Habits />},
                 {path: 'focus', element: <Focus />},
                 {path: 'journal', element: <Journal />},
                 {path: 'other', element: <Other />},
@@ -33,7 +36,7 @@ const App = () => {
     ])
 
     return (
-       <AuthContextProvider> <RouterProvider router={router}/></AuthContextProvider>
+       <AuthContextProvider> <HabitsProvider><RouterProvider router={router}/></HabitsProvider></AuthContextProvider>
     );
 }
 

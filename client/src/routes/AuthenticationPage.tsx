@@ -22,7 +22,7 @@ export async function action({request}: {request: Request}) {
         password: data.get('password')
     };
 
-    console.log("what date", authData)
+    console.log("what data", authData)
 
     const response = await fetch('http://localhost:8080/users/' + mode, {
         method: 'POST',
@@ -39,6 +39,11 @@ export async function action({request}: {request: Request}) {
     if (!response.ok) {
         throw json({message: 'Could not authenticate user.'}, {status: 500});
     }
+
+    const resData = await response.json();
+    const token = resData.token;
+
+    localStorage.setItem('token', token)
 
     return redirect('/')
 }

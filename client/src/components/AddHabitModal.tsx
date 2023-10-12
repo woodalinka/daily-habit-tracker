@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useRef} from "react";
+import {useHabits} from "../store/habits-context";
 
 type Habit = {
-    name: string;
+    description: string;
     _isCompleted: boolean;
     _completedDates: string[];
 };
@@ -13,9 +14,10 @@ type AddHabitModalProps = {
 };
 
 
-const AddHabitModal = ({show, onClose, onAddHabit}: AddHabitModalProps) => {
+const AddHabitModal = ({show, onClose}: AddHabitModalProps) => {
     const [newHabit, setNewHabit] = useState("");
     const modalRef = useRef<HTMLDivElement>(null);
+    const {setHabits} = useHabits();
 
     useEffect(() => {
         const handleOutsideClick = (event: any) => {
@@ -32,9 +34,33 @@ const AddHabitModal = ({show, onClose, onAddHabit}: AddHabitModalProps) => {
             document.removeEventListener("mousedown", handleOutsideClick);
         }
     }, [show, onClose]);
-    const handleAddHabit = (e: React.FormEvent) => {
+    const handleAddHabit = async (e: React.FormEvent) => {
         e.preventDefault();
-        onAddHabit({name: newHabit, _isCompleted: false, _completedDates: []});
+
+        const newHabitData = {description: newHabit, _isCompleted: false, _completedDates: []}
+        setHabits(prevHabits => [...prevHabits, newHabitData]);
+        const token = localStorage.getItem('token')
+
+        try {
+            const response = await fetch('http://localhost:8080/habits', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newHabitData)
+            });
+
+            if (response.ok) {
+                console.log('Habit added successfully');
+                onClose()
+            } else {
+                console.log('Failed to add habit');
+            }
+        } catch (error) {
+            console.error('There was a problem with the request', error);
+        }
+
         setNewHabit("");
     };
 

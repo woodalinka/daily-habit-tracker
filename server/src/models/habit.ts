@@ -8,10 +8,6 @@ export interface Habit {
         required: true,
         trim: true
     }
-    occurrence: {
-        type: number,
-        required: true
-    }
     completion: {
         type: boolean,
         default: false
@@ -20,6 +16,9 @@ export interface Habit {
         type: ObjectId,
         required: boolean,
         ref: PopulatedDoc<typeof User>
+    },
+    completionDates: {
+        type: []
     }
 }
 
@@ -30,10 +29,6 @@ const habitSchema = new Schema<Habit>({
         trim: true,
 
     },
-    occurrence: {
-        type: Number,
-        required: true
-    },
     completion: {
         type: Boolean,
         default: false
@@ -42,6 +37,9 @@ const habitSchema = new Schema<Habit>({
         type: ObjectId,
         required: true,
         ref: 'User'
+    },
+    completionDates: {
+        type: Array
     }
 })
 

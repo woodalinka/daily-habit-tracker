@@ -3,7 +3,7 @@ import React, {useState, useEffect, ReactNode} from 'react'
 type AuthContextProps = {
     isLoggedIn: boolean,
     onLogout: () => void,
-    onLogin: () => void
+    onLogin: (token: string) => void
 }
 
 const AuthContext = React.createContext<AuthContextProps>({
@@ -16,19 +16,20 @@ export const AuthContextProvider: React.FC<{children: ReactNode}> = ({children})
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+        const storedUserLoggedInInformation = localStorage.getItem('token');
+        console.log("whats in storage", storedUserLoggedInInformation)
 
-        if (storedUserLoggedInInformation === '1') {
+        if (storedUserLoggedInInformation) {
             setIsLoggedIn(true)
         }
     }, [])
     const logoutHandler = () => {
-        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('token')
         setIsLoggedIn(false)
     };
 
-    const loginHandler = () => {
-        localStorage.setItem('isLoggedIn', '1');
+    const loginHandler = (token: string) => {
+        localStorage.setItem('token', token);
         setIsLoggedIn(true);
     }
 
