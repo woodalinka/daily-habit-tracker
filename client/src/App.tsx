@@ -1,5 +1,5 @@
 import React from 'react';
-import {createBrowserRouter, RouterProvider, useNavigate} from 'react-router-dom';
+import {createBrowserRouter, RouterProvider} from 'react-router-dom';
 import './App.css';
 
 import Other from "./routes/Other";
@@ -8,14 +8,11 @@ import Journal from "./routes/Journal";
 import RootLayout from "./components/RootLayout";
 import HomePage from "./routes/HomePage";
 import Error from "./routes/Error";
-import AuthenticationPage, {action as authAction} from "./routes/AuthenticationPage";
+import AuthenticationPage from "./routes/AuthenticationPage";
 import {AuthContextProvider} from "./store/auth-context";
 import Habits from "./routes/Habits";
 import {HabitsProvider} from "./store/habits-context";
 
-
-
-// type AppProps = HabitsProps;
 
 const App = () => {
 
@@ -30,7 +27,7 @@ const App = () => {
                 {path: 'focus', element: <Focus />},
                 {path: 'journal', element: <Journal />},
                 {path: 'other', element: <Other />},
-                {path: 'auth', element: <AuthenticationPage />, action: authAction}
+                {path: 'auth', element: <AuthenticationPage />}
             ]
         }
     ])

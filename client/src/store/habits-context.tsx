@@ -1,4 +1,5 @@
 import React, {createContext, useState, useContext, useEffect} from 'react';
+import AuthContext from "./auth-context";
 
 export type Habit = {
         description: string;
@@ -21,9 +22,14 @@ export const useHabits = () => {
     return context;
 };
 export const HabitsProvider: React.FC<{children:React.ReactNode}> = ({children}) => {
+    const {isLoggedIn} =useContext(AuthContext);
     const [habits, setHabits] = useState<Habit[]>([]);
 
     useEffect(() => {
+        if (!isLoggedIn) {
+            return;
+        }
+
         const fetchHabits = async () => {
             const token = localStorage.getItem('token')
 
@@ -44,7 +50,7 @@ export const HabitsProvider: React.FC<{children:React.ReactNode}> = ({children})
         }
 
         fetchHabits();
-    }, []);
+    }, [isLoggedIn]);
 
     return (
         <HabitsContext.Provider value={{ habits, setHabits }}>

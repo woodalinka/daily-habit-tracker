@@ -1,12 +1,19 @@
-import {Form, Link, useSearchParams} from 'react-router-dom';
-import React, {useContext} from "react";
-import AuthContext from "../store/auth-context";
+import {Link, useSearchParams} from 'react-router-dom';
+import React from "react";
 
-const AuthForm = () => {
+interface AuthFormProps {
+    onSubmit: (email: string, password: string, mode: string) => Promise<void>;
+}
+const AuthForm: React.FC<AuthFormProps> = ({onSubmit}) => {
     const [searchParams] = useSearchParams();
     const isLogin = searchParams.get('mode') === 'login';
 
-    const ctx = useContext(AuthContext);
+    const submitHandler = async (e: any) => {
+        e.preventDefault();
+        const email = e.target.elements.email.value;
+        const password = e.target.elements.password.value;
+        await onSubmit(email, password, isLogin ? 'login' : 'signup')
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -16,7 +23,7 @@ const AuthForm = () => {
                         {isLogin ? "Log in" : "Create a new user"}
                     </h1>
                 </div>
-                <Form className="mt-8 space-y-6" method="post">
+                <form className="mt-8 space-y-6" method="post" onSubmit={submitHandler}>
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
                             <label htmlFor="email" className="sr-only">Email</label>
@@ -53,7 +60,7 @@ const AuthForm = () => {
                             {isLogin ? 'Enter' : 'Save'}
                         </button>
                     </div>
-                </Form>
+                </form>
             </div>
         </div>)
 }
