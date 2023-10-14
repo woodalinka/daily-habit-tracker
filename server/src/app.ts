@@ -8,7 +8,6 @@ import habitRouter from './routers/habits'
 require('./db/mongoose')
 
 const app = express();
-const port = process.env.PORT || 8080
 const publicDirectoryPath = path.join(__dirname, '../../client/build')
 
 app.use((req, res, next) => {
@@ -42,21 +41,4 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello World')
 })
 
-app.listen(port, () => {
-    console.log("Server is up on port " + port)
-})
-
-import Habit from './models/habit'
-// import User from './models/user'
-//
-// const main = async () => {
-//     // const habit = await Habit.findById('65083436fae6127541e16482')
-//     // await habit!.populate('owner')
-//     // console.log(habit!.owner)
-//
-//     const user = await User.findById('650832e9c584ab07ecd7b8a3')
-//     await user!.populate('habits')
-//     console.log(user!.habits)
-// }
-//
-// main()
+export default app

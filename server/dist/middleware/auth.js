@@ -21,7 +21,7 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
         if (!token) {
             throw new Error();
         }
-        const decoded = jsonwebtoken_1.default.verify(token, 'thisismynewcourse');
+        const decoded = jsonwebtoken_1.default.verify(token, `${process.env.JWT_SECRET}`);
         if (typeof decoded === 'object' && decoded.hasOwnProperty('_id')) {
             const user = yield user_1.default.findOne({ _id: decoded._id, 'tokens.token': token });
             if (!user) {

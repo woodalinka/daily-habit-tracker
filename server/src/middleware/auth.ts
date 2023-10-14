@@ -9,7 +9,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
         if (!token) {
             throw new Error();
         }
-        const decoded = jwt.verify(token, 'thisismynewcourse');
+        const decoded = jwt.verify(token, `${process.env.JWT_SECRET}`);
 
         if (typeof decoded === 'object' && decoded.hasOwnProperty('_id')) {
             const user = await User.findOne({_id: decoded._id, 'tokens.token': token})

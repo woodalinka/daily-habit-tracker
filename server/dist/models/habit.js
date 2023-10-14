@@ -8,10 +8,6 @@ const habitSchema = new mongoose_1.Schema({
         required: true,
         trim: true,
     },
-    occurrence: {
-        type: Number,
-        required: true
-    },
     completion: {
         type: Boolean,
         default: false

@@ -1,6 +1,5 @@
 import React, {useState, useEffect, ReactNode} from 'react';
 
-
 type AuthContextProps = {
     isLoggedIn: boolean,
     onLogout: () => void,

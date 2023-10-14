@@ -9,7 +9,6 @@ const user_1 = __importDefault(require("./routers/user"));
 const habits_1 = __importDefault(require("./routers/habits"));
 require('./db/mongoose');
 const app = (0, express_1.default)();
-const port = process.env.PORT || 8080;
 const publicDirectoryPath = path_1.default.join(__dirname, '../../client/build');
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // or the specific domain you want to allow
@@ -38,19 +37,4 @@ app.use(habits_1.default);
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
-app.listen(port, () => {
-    console.log("Server is up on port " + port);
-});
-// import User from './models/user'
-//
-// const main = async () => {
-//     // const habit = await Habit.findById('65083436fae6127541e16482')
-//     // await habit!.populate('owner')
-//     // console.log(habit!.owner)
-//
-//     const user = await User.findById('650832e9c584ab07ecd7b8a3')
-//     await user!.populate('habits')
-//     console.log(user!.habits)
-// }
-//
-// main()
+exports.default = app;
