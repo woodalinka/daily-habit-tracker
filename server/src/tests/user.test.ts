@@ -77,3 +77,7 @@ test('Should not delete account for unauthenticated user', async () => {
 //TODO
 // test('Should update valid user fields', async () => {})
 // test('Should not update invalid user fields', async () => {})
+// Should not signup user with invalid name/email/password
+// Should not update user if unauthenticated
+// Should not update user with invalid name/email/password
+// Should not delete user if unauthenticated
