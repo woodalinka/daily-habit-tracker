@@ -1,24 +1,9 @@
 import request from 'supertest'
-import jwt from 'jsonwebtoken';
-import * as mongoose from "mongoose";
 import app from '../app'
-
 import User from '../models/user';
+import {userOne, setupDatabase} from './fixtures/db'
 
-const userOneId = new mongoose.Types.ObjectId()
-const userOne = {
-    _id: userOneId,
-    email: 'alina@test.com',
-    password: '1234567!',
-    tokens: [{
-        token: jwt.sign({_id: userOneId}, `${process.env.JWT_SECRET}`)
-    }]
-}
-
-beforeEach(async () => {
-    await User.deleteMany()
-    await new User(userOne).save()
-})
+beforeEach(setupDatabase)
 
 test('Should signup a new user ', async () => {
     const response = await request(app).post('/users/signup').send({
@@ -72,7 +57,7 @@ test('Should  not get profile for unauthenticated user', async () => {
 })
 
 test('Should delete account for user', async () => {
-    const response = await request(app)
+    await request(app)
         .delete('/users/me')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
         .send()
