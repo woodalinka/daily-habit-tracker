@@ -6,10 +6,12 @@ import {userOne, setupDatabase} from './fixtures/db'
 beforeEach(setupDatabase)
 
 test('Should signup a new user ', async () => {
-    const response = await request(app).post('/users/signup').send({
-        email: 'alina@exampletest.com',
-        password: 'MyPass777'
-    }).expect(201)
+    const response = await request(app)
+        .post('/users/signup').send({
+            email: 'alina@exampletest.com',
+            password: 'MyPass777'
+        })
+        .expect(201)
 
     const user = await User.findById(response.body.user._id)
     expect(user).not.toBeNull()
@@ -21,6 +23,24 @@ test('Should signup a new user ', async () => {
         token: user!.tokens[0].token
     })
     expect(user!.password).not.toBe('MyPass777')
+})
+
+test('Should not signup user with invalid email', async () => {
+    const response = await request(app)
+        .post('/users/signup').send({
+            email: 'exampletest.com',
+            password: 'MyPass777'
+        })
+        .expect(400)
+})
+
+test('Should not signup user with invalid password', async () => {
+    const response = await request(app)
+        .post('/users/signup').send({
+            email: 'alina@exampletest.com',
+            password: 'Password'
+        })
+        .expect(400)
 })
 
 test('Should login existing user', async () => {
@@ -74,10 +94,10 @@ test('Should not delete account for unauthenticated user', async () => {
         .expect(401)
 })
 
+
 //TODO
 // test('Should update valid user fields', async () => {})
 // test('Should not update invalid user fields', async () => {})
-// Should not signup user with invalid name/email/password
 // Should not update user if unauthenticated
 // Should not update user with invalid name/email/password
 // Should not delete user if unauthenticated
